@@ -1,0 +1,86 @@
+.data
+input1:  .asciiz  "Nhap so phan tu cua mang: "
+input2:  .asciiz  "a[ "
+input3:  .asciiz  " ] = "
+output:  .asciiz  "\nMang da nhap la: "
+array:  .space  100   # int array[100]
+.text
+main:
+	# nhap n
+  	la  $a0, input1
+ 	li  $v0, 4
+ 	syscall
+	#doc n
+ 	li $v0, 5
+ 	syscall
+ 	move $t0, $v0 #t0=n
+
+	# khoi tao i va mang
+ 	add  $t1, $zero, 0 #i=t1=0
+  	la  $a1, array($t0) #load arr vao a1
+
+NhapMang:
+	# Dieu kien thoat khoi vong lap
+  	subu  $t2, $t1, $t0 #Neu i>=n thi ket thuc
+  	bgez  $t2, KetThucNhap
+
+	# xuat a[
+  	la    $a0, input2 
+  	addi  $v0, $zero, 4
+  	syscall
+	
+	#in ra i:
+  	addi  $a0, $t1, 0
+  	addi  $v0, $zero, 1
+  	syscall
+	
+	#xuat ] =
+ 	la    $a0, input3
+  	addi  $v0, $zero, 4
+  	syscall
+
+	# nhap so nguyen va luu vao array[i]
+  	addi  $v0, $zero, 5
+  	syscall
+  	sw    $v0, ($a1)
+
+	# tang i va mang nhay den phan tu ke tiep
+  	addi  $t1, $t1, 1
+  	addi  $a1, $a1, 4
+
+  	j    NhapMang #Tiep tuc vong lap
+
+#xuat ra: mang da nhap la:
+KetThucNhap:
+ 	 la    $a0, output
+ 	 addi  $v0, $zero, 4
+ 	 syscall
+
+	# khoi tao mang arr=a1 va i=t1
+  	la    $a1, array($t0)
+  	addi  $t1, $zero, 0
+
+XuatMang:
+	# dieu kien thoat khoi vong lap
+ 	subu  $t2, $t1, $t0
+  	bgez  $t2, KetThucXuat
+
+	# xuat phan tu array[i]
+ 	lw    $a0, ($a1)
+ 	li  $v0, 1
+  	syscall
+	
+ 	 # xuat khoang trang
+ 	 addi  $a0, $zero, 0x20
+ 	 addi  $v0, $zero, 11
+ 	 syscall
+
+	# tang i va mang nhay den phan tu ke tiep
+  	addi  $t1, $t1, 1
+  	addi  $a1, $a1, 4
+
+  	j    XuatMang
+
+KetThucXuat:
+  	addi  $v0, $zero, 10
+ 	syscall
