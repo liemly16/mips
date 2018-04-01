@@ -17,7 +17,7 @@ main:
 
 	# khoi tao i va mang
  	add  $t1, $zero, 0 #i=t1=0
-  	la  $a1, array($t0) #load arr vao a1
+  	la  $a1, array #load arr vao a1
 
 NhapMang:
 	# Dieu kien thoat khoi vong lap
@@ -57,7 +57,7 @@ KetThucNhap:
  	 syscall
 
 	# khoi tao mang arr=a1 va i=t1
-  	la    $a1, array($t0)
+  	la    $a1, array
   	addi  $t1, $zero, 0
 
 XuatMang:
@@ -71,7 +71,7 @@ XuatMang:
   	syscall
 	
  	 # xuat khoang trang
- 	 addi  $a0, $zero, 0x20
+ 	 addi  $a0, $zero, 32
  	 addi  $v0, $zero, 11
  	 syscall
 
